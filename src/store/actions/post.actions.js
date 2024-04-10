@@ -16,7 +16,7 @@ export async function loadPosts(paging, pagingSize, variant) {
         if (+pageNumber !== +paging?.pageNumber) {
             const postsData = await postService.query(pageNumber, pagingSize, variant)
             store.dispatch({type: GET_POSTS, postsData})
-        } //else console.log("loadPosts(): no query(" + pageNumber + ", " + pagingSize + ")")
+        } 
         
     } catch(err) {
         console.log("Had issues loading posts")

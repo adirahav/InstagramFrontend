@@ -118,8 +118,8 @@ export function Notification({prevNotification, currNotification, onClose}) {
     const [isLoading, setIsLoading] = useState(false)
     const [notification, setNotification] = useState(currNotification)
     
-    const handelOnFollow = async () => {
-        
+    const handelOnFollow = async (event) => {
+        event.preventDefault()
         if (notification.following) {
             showWarningAlert({
                 title: "",
@@ -154,12 +154,15 @@ export function Notification({prevNotification, currNotification, onClose}) {
                       `<span>${utilService.timeAgo(notification.notifyAt)}</span>`
 
                 return <>
-                    <div className="message" dangerouslySetInnerHTML={{ __html: followStr }} ></div>
-                    <button className={notification.following ? 'following' : 'follow'} onClick={handelOnFollow}>
-                        {!isLoading && !notification.following && <span>Follow</span>}
-                        {!isLoading && notification.following && <span>Following</span>}
-                        {isLoading && <LoadingIcon.button />}
-                    </button>
+                    <li>
+                        <Avatar size="medium" hasBorder={false} textPosition="none" user={notification} /> 
+                        <div className="message" dangerouslySetInnerHTML={{ __html: followStr }} ></div>
+                        <button className={notification.following ? 'following' : 'follow'} onClick={(event) => handelOnFollow(event)}>
+                            {!isLoading && !notification.following && <span>Follow</span>}
+                            {!isLoading && notification.following && <span>Following</span>}
+                            {isLoading && <LoadingIcon.button />}
+                        </button>
+                    </li>
                 </>
 
             case "new_post":
@@ -171,8 +174,11 @@ export function Notification({prevNotification, currNotification, onClose}) {
                         `<span>${utilService.timeAgo(notification.notifyAt)}</span>`
 
                 return <>
-                    <div className="message" dangerouslySetInnerHTML={{ __html: postStr }} ></div>
-                    <a onClick={handleOnNotificationPress} href={`/#/p/${notification._id}`}><Media media={notification.media} isMediaPreview={true} /></a>
+                    <li onClick={handleOnNotificationPress}>
+                        <Avatar size="medium" hasBorder={false} textPosition="none" user={notification} /> 
+                        <div className="message" dangerouslySetInnerHTML={{ __html: postStr }} ></div>
+                        <a onClick={handleOnNotificationPress} href={`/#/p/${notification._id}`}><Media media={notification.media} isMediaPreview={true} /></a>
+                    </li>
                 </>
 
             case "new_post_like":
@@ -184,8 +190,11 @@ export function Notification({prevNotification, currNotification, onClose}) {
                         `<span>${utilService.timeAgo(notification.notifyAt)}</span>`
 
                 return <>
-                    <div className="message" dangerouslySetInnerHTML={{ __html: postLikeStr }} ></div>
-                    <a onClick={handleOnNotificationPress} href={`/#/p/${notification._id}`}><Media media={notification.media} isMediaPreview={true} /></a>
+                    <li onClick={handleOnNotificationPress}>
+                        <Avatar size="medium" hasBorder={false} textPosition="none" user={notification} /> 
+                        <div className="message" dangerouslySetInnerHTML={{ __html: postLikeStr }} ></div>
+                        <a onClick={handleOnNotificationPress} href={`/#/p/${notification._id}`}><Media media={notification.media} isMediaPreview={true} /></a>
+                    </li>
                 </>
 
             case "new_post_comment":
@@ -197,8 +206,11 @@ export function Notification({prevNotification, currNotification, onClose}) {
                         `<span>${utilService.timeAgo(notification.notifyAt)}</span>`
 
                 return <>
-                    <div className="message" dangerouslySetInnerHTML={{ __html: postCommentStr }} ></div>
-                    <a onClick={handleOnNotificationPress} href={`/#/p/${notification._id}`}><Media media={notification.media} isMediaPreview={true} /></a>
+                    <li onClick={handleOnNotificationPress}>
+                        <Avatar size="medium" hasBorder={false} textPosition="none" user={notification} /> 
+                        <div className="message" dangerouslySetInnerHTML={{ __html: postCommentStr }} ></div>
+                        <a onClick={handleOnNotificationPress} href={`/#/p/${notification._id}`}><Media media={notification.media} isMediaPreview={true} /></a>
+                    </li>
                 </>
         }
 
@@ -214,9 +226,6 @@ export function Notification({prevNotification, currNotification, onClose}) {
 
     return (<>
         {timeRange !== prevTimeRange && <li className="title"><h3>{timeRange}</h3></li>}
-        <li onClick={handleOnNotificationPress}>
-            <Avatar size="medium" hasBorder={false} textPosition="none" user={notification} />
-            {generateMessage({handleOnNotificationPress})}
-        </li>
+        {generateMessage({handleOnNotificationPress})}
     </>)
 }

@@ -17,7 +17,6 @@ export async function updateUser(userToSave) {
     try {   
         store.dispatch({ type: LOADING_START })
         const savedUser = await userService.update(userToSave)
-        console.log('Updated User:', savedUser, userService.getLoggedinUser())
         store.dispatch({type: UPDATE_USER, userToSave})
     } catch(err) {
         console.log("Had issues updating user")
@@ -46,7 +45,6 @@ export async function login(credentials) {
         store.dispatch({ type: LOADING_START })
         const loggedinUser = await authService.login(credentials)
         socketService.login(loggedinUser)
-        console.log(`${loggedinUser.username} loggedin succesfully!`)
         store.dispatch({type: LOGIN, loggedinUser})
     } catch(err) {
         console.log(`${credentials.identifier} had issues login`)
@@ -60,7 +58,6 @@ export async function logout() {
     try {   
         socketService.logout()
         await authService.logout()
-        console.log(`User logged out succesfully!`)
         store.dispatch({type: LOGOUT})
     } catch(err) {
         console.log("Had issues logged out user")

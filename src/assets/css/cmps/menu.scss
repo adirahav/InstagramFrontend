@@ -395,6 +395,7 @@ nav {
             
             li {
                 @include text('small');
+                cursor: default;
 
                 display: grid;
                 grid-template-columns: auto 1fr auto;
@@ -434,6 +435,7 @@ nav {
 
                         &:hover {
                             text-decoration: none;
+                            cursor: default;
                         }
                     }
 

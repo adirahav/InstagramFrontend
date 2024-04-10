@@ -65,7 +65,7 @@ function App() {//socket.connected
   }, [])
 
   function newNotification() {
-    console.log("NEW_NOTIFICATION")
+    //console.log("NEW_NOTIFICATION")
     
     if (notifications?.isVisible) {
       loadNotifications()
