@@ -1,0 +1,34 @@
+/* Setup */
+@import './setup/typography';
+@import './setup/vars';
+@import './setup/functions';
+@import './setup/mixins';
+
+/* Basics */
+@import "./basics/base.scss";
+@import "./basics/helpers.scss";
+@import "./basics/layout.scss";
+@import "./basics/animations.scss";
+
+/* Pages */
+@import "./pages/home.scss";
+@import "./pages/profile.scss";
+@import "./pages/messages.scss";
+@import "./pages/tag.scss";
+@import "./pages/explore.scss";
+
+/* Components */
+@import "./cmps/signin.scss";
+@import "./cmps/logo.scss";
+@import "./cmps/menu.scss";
+@import "./cmps/footer.scss";
+//@import "./cmps/overlay.scss";
+@import "./cmps/alert.scss";
+@import "./cmps/dynamicModal.scss";
+@import "./cmps/avatar.scss";
+@import "./cmps/postPreview.scss";
+@import "./cmps/followingUsers.scss";
+@import "./cmps/suggestedUsers.scss";
+@import "./cmps/media.scss";
+@import "./cmps/lazyLoadMedia.scss";
+@import "./cmps/messagesChat.scss";

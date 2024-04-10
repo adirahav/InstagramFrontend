@@ -1,0 +1,124 @@
+.logo {
+    display: none;
+
+    &.mobile {
+        display: flex;
+    }
+
+    grid-column: 2;
+    display: flex;
+    align-items: center;
+    margin-left: 13px;
+    margin: 30px 10px 32px;
+    
+    /*img {
+        width: $logo-width;
+        height: $logo-height;
+    }*/
+
+    a {
+        cursor: default;
+
+        svg {
+            &.default {
+                display: block;
+            }
+            &.small {
+                display: none;
+            }
+        }
+
+        h2 {
+            font-family: 'Billabong';
+            font-size: 34px;
+            padding: 0;
+        }
+
+        &:hover {
+            text-decoration: none;
+        }
+    }
+
+    @include mobile-layout {
+        grid-column: 1;
+        margin: 0;
+
+        svg {
+            margin-right: 10px;
+        }
+
+        h2 {
+            margin-top: 3px;
+        }
+    }
+}
+
+.sidenav {
+ 
+    &.narrow {
+        z-index: 6;
+        width: 68px;
+
+        .logo {
+            margin: 24px 13px 32px;
+
+            a {
+                cursor: default;
+
+                svg {
+                    &.default {
+                        display: none;
+                    }
+                    &.small {
+                        display: block;
+                    }
+                }
+
+                h2 {
+                    display: none;
+                }
+            }
+        }
+
+        nav {
+            width: 68px;
+        }
+
+        ul {    
+            &.bottom {
+                z-index: 6;
+                width: 68px;
+            }
+            li {
+                &:hover {
+                    width: 48px;
+                }
+    
+                span:not(.new-message) {
+                    display: none;
+                }
+            } 
+        }
+    }
+
+    &.wide {
+        .logo {
+            /*margin: 28px 10px 23px;*/
+            margin: 22px 10px 15px;
+
+            a {
+                cursor: default;
+
+                svg {
+                    &.default {
+                        display: block;
+                    }
+                    &.small {
+                        display: none;
+                    }
+                }
+            }
+        }
+    }
+
+}

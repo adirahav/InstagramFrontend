@@ -1,0 +1,77 @@
+
+.alert {
+    position: absolute;
+    top: calc(50% - 20px);
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    margin: 20px auto; 
+    -webkit-box-shadow: 0 0 0 100vmax var(--overlay-background);
+    box-shadow: 0 0 0 100vmax var(--overlay-background);
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    z-index: 10;
+    background-color: var(--alert-background);
+    overflow: hidden;
+
+    header {
+        background-color: var(--alert-header-background);
+        border-radius: 12px 12px 0 0;
+        align-items: center;
+        text-align: center;
+
+        h2 {
+            @include text('big');
+            margin-top: 20px;
+        }
+    }
+    
+    .message {
+        @include scrollbar;
+        @include text('small-light');
+        text-align: center;
+        width: 100%;
+        overflow: auto;
+
+        &:focus-visible {
+            outline: 0;
+        }
+        
+        p {
+            padding: 0 0 30px 0;
+        }
+
+        .avatar {
+            display: inline-block;
+            margin-bottom: 50px;
+        }
+    }
+    
+    .buttons {
+        button {
+            @include button('modal');
+
+            &.cancel {
+                @include button('modal-cancel');
+            }
+        }
+    }
+
+    &.error {
+        header h2 {
+            @include text('big-bold');
+        }
+
+        .buttons button.ok {
+            @include button('modal-error');    
+        }
+    }
+
+    &.warning .buttons button.ok {
+        @include button('modal-warning');    
+    }
+
+    @include mobile-layout {
+        width: calc(100% - 40px);
+    }
+}

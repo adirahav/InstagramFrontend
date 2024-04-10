@@ -1,0 +1,19 @@
+footer {
+    height: $footer-height;
+    background-color: var(--footer-background);
+    display: grid;  
+    align-items: center;
+
+    div {
+        grid-column: 2;
+        text-align: center;
+    }
+
+    @include mobile-layout {
+        @include footer-grid-template-columns($break-mobile);
+    }
+
+    @include desktop-layout {
+        @include footer-grid-template-columns($break-desktop);
+    } 
+}

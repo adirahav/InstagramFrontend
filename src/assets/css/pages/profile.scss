@@ -1,0 +1,360 @@
+.profile {
+    grid-column: 2;
+    display: grid;
+    grid-template-columns: minmax($layout-padding, 2fr) 13fr minmax($layout-padding, 2fr);
+    grid-template-rows: auto 1fr;
+    margin: 30px 20px 0;
+
+    & > .basic-info {
+        grid-column: 2;
+        display: grid;
+        grid-template-columns: 322px 1fr;          
+        grid-template-areas:
+            "giant-avatar actions"
+            "giant-avatar info"
+            "giant-avatar fullname";
+        margin-bottom: 44px;
+        height: 155px;
+
+        & > div:nth-child(1) {
+            grid-area: giant-avatar;
+            margin-right: 25px;
+            margin-top: 5px;
+            justify-content: center;
+            display: inline-flex;
+        }
+
+        & > div:nth-child(2) {
+            grid-area: bigger-avatar;
+            margin-right: 30px;
+            justify-content: center;
+        }
+
+        & > div:nth-child(3) {
+            grid-area: actions;
+            margin-top: 12px;
+            height: 36px;
+            
+            span {
+                @include text('big');
+                margin-right: 20px;
+            }
+
+            button {
+                @include button('default');
+                margin-right: 7px;
+                height: 32px;
+                
+                span {
+                    color: var(--button-default-text);
+                    font-size: rem(14px);
+                    font-weight: 600;
+                    display: inline-block;
+                }
+
+                &:hover {
+                    @include button('default-hover');
+                    margin-right: 7px;
+                    height: 32px;
+                }
+
+                &.self {
+                    @include button('light');
+
+                    &:hover {
+                        @include button('light-hover');
+                    }
+                }
+
+                &.following {
+                    width: 94px;
+                } 
+                
+                &.follow {
+                    width: 74px;
+                }
+
+                svg {
+                    @include loading('light');
+                    margin-top: 3px;
+                }
+            }
+        }
+
+        & > div:nth-child(4) {
+            grid-area: info;
+            margin-left: 1px;
+            margin-bottom: 0;
+           
+            div {
+                margin-right: 40px;
+                display: inline-block;
+
+                span, a {
+                    @include text('medium');
+                    text-decoration: none;
+    
+                    &:last-child {
+                        margin-right: 0;
+                        font-weight: normal;
+                    }
+                }
+            }
+            
+        }
+
+        & > div:nth-child(5) {
+            grid-area: fullname;
+            margin-bottom: 22px;
+            margin-left: 1px;
+
+            span, a {
+                @include text('small-bold');
+            }
+        }
+    }
+
+    & > .main {
+        grid-column: 2;
+        display: inline;
+        border-top: 1px solid var(--profile-separator);
+
+        .tabs {
+            display: grid;
+            grid-template-columns: minmax($layout-padding, 1fr) 425px minmax($layout-padding, 1fr);
+            width: 100%;
+            height: 53px;
+                
+            div {
+                grid-column: 2;
+                display: flex;
+                justify-content: center;
+                
+                a {
+                    display: flex;
+                    align-items: center;
+                    top: 0;
+                    position: relative;
+                    margin: 0 30px;
+            
+                    & > span {
+                        @include text("tiny-bold");
+                        color: var(--text-light);
+                        text-transform: uppercase;
+                        letter-spacing: 1px;
+
+                        svg {
+                            margin-top: 1px;
+                            margin-right: 6px;
+                        }
+
+                        span {
+                            bottom: 2px;
+                            position: relative;
+                        }
+                        
+                    }
+                    
+                    &:hover {
+                        text-decoration: none;
+                    }
+
+                    &.active {
+                        color: var(--text);
+                        border-top: 1px solid var(--profile-separator-selected);
+                    }
+
+                }
+                
+            }
+        }
+
+        .posts {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            column-gap: 4px;
+            row-gap: 2px;
+            margin-bottom: 10px;
+
+            & > div {
+                img {
+                    aspect-ratio: 1 / 1;
+                    object-fit: cover;
+                }
+
+                & > .info {
+                    border: 0;
+                    font: inherit;
+                    font-size: 100%;
+                    margin: 0;
+                    margin-right: 7px;
+                    margin-top: 2px;
+                    padding: 0;
+                    vertical-align: baseline;
+                    position: relative;
+                    width: 100%;
+                    height: calc(100% - 2px);
+                    top: -100%;
+                    border-radius: 4px;
+
+                    & > div {
+                        display: none;
+                        position: absolute;
+                        align-items: center;
+                        justify-content: center;
+                        width: fit-content;
+                        width: 100%;
+                        top: 50%;
+                        transform: translateY(-50%);
+
+                        @include text-blank("medium-bold");
+                            
+                        span {
+                            background-image: url(/src/assets/images/icons.png);
+                            background-repeat: no-repeat;
+                            display: block;
+                            height: 19px;
+                            width: 19px;
+                            margin: 0 5px;
+                        
+                            &:not(:first-child) {
+                                margin-left: 29px;
+                            }
+
+                            &.likes {
+                                background-position: -340px -333px;
+                            }
+
+                            &.comments {
+                                background-position: -382px -333px;
+                            }
+                        }
+                    }
+
+                    &:hover{
+                        background-color: var(--profile-post-mask-background);
+                        
+                        & > div {
+                            display: flex;   
+                        }
+                    }
+                }
+                
+            }
+        }
+    }
+
+    @include mobile-layout {
+        display: grid;
+        grid-template-columns: 1fr;
+        margin: 0;
+
+        & > .basic-info {
+            grid-column: 1;
+            grid-template-columns: 120px 1fr;                                          
+            grid-template-areas:
+                    "bigger-avatar actions"
+                    "fullname fullname"
+                    "info info";
+            height: 174px;
+            margin-top: 42px;
+
+            & > div:nth-child(1) {
+                /*grid-area: giant-avatar;*/
+                display: none;
+            }
+    
+            & > div:nth-child(2) {
+                /*grid-area: bigger-avatar;*/
+                margin: 15px;
+            }
+    
+            & > div:nth-child(3) {
+                /*grid-area: actions;*/
+                display: inline-grid;
+                justify-content: left;
+                height: 77px;
+
+                span {
+                    margin-bottom: 18px;
+                }
+
+                button {
+                    margin: 0;
+                }
+            }
+    
+            & > div:nth-child(4) {
+                /*grid-area: info;*/
+                
+                width: 100%;
+                top: 220px;
+                border-top: 1px solid var(--modal-header-border);
+                height: 60px;
+                display: flex;
+                justify-content: space-around;
+                align-items: center;
+                margin: 0;
+
+                span, a {
+                    width: min-intrinsic;
+                    width: -webkit-min-content;
+                    width: -moz-min-content;
+                    width: min-content;
+                    display: table-caption;
+                    display: -ms-grid;
+                    -ms-grid-columns: min-content;
+                    text-align: center;
+
+                    @include text("small-light");
+
+                    &:first-line {
+                        @include text("small-bold");
+                    }
+                }
+                
+                div {
+                    margin: 0;
+                }
+            }
+    
+            & > div:nth-child(5) {
+                grid-area: fullname;
+                padding-left: 15px;
+                margin-top: 2px;
+                margin-bottom: 21px;
+            }
+
+            &.self {
+                & > div:nth-child(3) {
+                    span {
+                        margin: auto;
+                    }
+                }
+            }
+        }
+
+        & > .main {
+            grid-column: 1;
+            
+            .tabs {
+                grid-template-columns: minmax($layout-padding, 1fr) 1fr minmax($layout-padding, 1fr);
+
+                div {
+                    a {
+                        &.active {
+                            svg {
+                                color: var(--text-action);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        & > .side {
+            display: none;
+        }
+    }
+}
+

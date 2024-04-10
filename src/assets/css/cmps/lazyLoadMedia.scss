@@ -1,0 +1,32 @@
+.lazy-media {
+    display: grid;
+    min-height: 50px;
+    
+    &.preloading {
+        filter: opacity(0.9);
+        background: white;
+        
+        &.hidden {
+            display: none;
+        }
+    }
+
+    &.loading {
+        &.hidden {
+            display: none;
+        }
+    }
+
+    &.loaded {
+        opacity: 1;
+    
+        &.hidden {
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: 'opacity 0.5s';
+        }
+    }
+}
+

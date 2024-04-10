@@ -1,0 +1,21 @@
+.followings-users {
+    list-style: none;
+    display: flex;
+    justify-content: flex-start;
+    width: 100%;
+    overflow-x: auto;
+    padding: 0;
+    margin-top: 26px;
+    margin-bottom: 20px;
+
+    li {
+        margin: 0 7.4px;
+    }
+    
+    @include mobile-layout {
+        margin-bottom: 0;
+        margin-top: 20px;
+    }
+
+    
+}

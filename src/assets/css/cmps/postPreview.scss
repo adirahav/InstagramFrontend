@@ -1,0 +1,275 @@
+h1.suggested-posts {
+    @include text('big');
+    grid-column: 2;
+    margin: 0;
+    padding: 3px 0 10px;
+
+    @include mobile-layout {
+        grid-column: 1/-1;
+        margin: 10px 0;
+        padding: 0 10px 17px;
+        border-bottom: 1px solid var(--post-border);
+    }
+}
+
+article.post-preview {
+    grid-column: 2;
+    border-bottom: 1px solid var(--post-border);
+    margin-bottom: 16px;
+    margin-right: 12px;
+    padding-bottom: 10px;
+    
+    header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 12px;
+        
+        & > div {
+           
+            display: flex;
+            align-items: center;
+
+            & > div {
+           
+                align-items: center;
+                display: flex;
+                @include text("small-light");
+                
+                &::before {
+                    content: '•';
+                    margin: 0 5px;
+                }
+
+                & button {
+             
+                    &.follow, &.following {
+                        @include button("link-small");
+                        width: 36px;
+        
+                        &:hover {
+                            @include button("link-small-hover");
+                        }
+                    }
+
+                    &.following {
+                        width: 53px;
+                    }
+                    
+                    svg {
+                        @include loading("dark");
+                        margin-top: 6px;
+                    }
+
+                    &::before {
+                        content: '•';
+                        margin: 0 5px;
+                        color: var(--text-light);
+                    }
+
+                    &.loading {
+                        animation-name: none;
+
+                        &::before {
+                            bottom: 4px;
+                            position: relative;
+                        }
+                    }
+                }   
+            }
+        }
+
+        & > svg {
+            margin: auto 0;
+        }
+    }
+
+    main {
+        .content {
+   
+        }
+
+        .actions {
+            display: flex;
+            justify-content: space-between;
+
+            div {
+                svg {
+                    margin: 8px 15px 0 0;
+                    color: var(--icon-color);
+
+                    &:hover {
+                        color: var(--icon-color-hover);
+                    }
+
+                    &.icon-liked {
+                        color: var(--icon-liked-color);
+
+                        -webkit-animation: scaleoutin 1s forwards;
+                        animation: scaleoutin 1s forwards;   
+                    }
+                }
+
+                &:nth-child(2) {
+                    svg {
+                        margin-right: 0;
+                    }
+                }
+            }
+        }
+
+        .details {
+            font-size: 14px;
+
+            .likes {
+                font-weight: 600;
+                margin: 7px 0;
+            }
+
+            a.user-profile {
+                font-weight: 600;
+                
+                &:hover {
+                    text-decoration: none;
+                    opacity: 0.5;
+                }
+            }
+
+            a.hashtag {
+                color:  var(--text-link);
+
+                &:hover {
+                    text-decoration: none;
+                }
+            }
+
+            .text {
+                margin-top: 9px;
+                display: block;
+            }
+            
+            .more {
+                color: var(--text-light);
+
+                &::before {
+                    content: "... ";
+                }
+            }
+
+            .view-all-comments {
+                margin-top: 4px;
+                margin-left: 2px;
+            }
+
+            .add-comment {
+                display: flex;
+                margin: 7px 0;
+
+                textarea {
+                    @include scrollbar;
+    
+                    width: calc(100% - 36px);
+                    min-height: 18px;
+                    max-height: 80px;
+                    height: 18px;
+                    line-height: 18px;
+                    margin: 0;
+                    padding: 0;
+                    font-size: 14px;
+                    border: 0;
+                    resize: none;
+                    overflow-y: auto;
+                    margin-right: 8px;
+    
+                    &:focus-visible {
+                        outline: 0;
+                    }
+                }
+    
+                button {
+                    @include button("link-small");
+    
+                    &:hover {
+                        @include button("link-small-hover");
+                    }
+                }
+            }
+        }
+    }
+
+    @include mobile-layout {
+        grid-column: 1/-1;
+        display: grid;
+        grid-template-columns: $layout-padding 1fr $layout-padding;
+        position: relative;
+        border-bottom: 0;
+        margin: 10px 0;
+        
+        &::before {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: $layout-padding; 
+            width: calc(100% - $layout-padding * 2); 
+            height: 1px;
+            background-color: var(--story-border); 
+          }
+
+        header {
+            grid-column: 2;
+        }
+
+        main {
+            grid-column: 1 / -1;
+            display: grid;
+            grid-template-columns: $layout-padding 1fr $layout-padding;
+
+            .content {
+                grid-column: 1/-1;
+
+                img {
+                    border-radius: 0;
+                }
+            }
+
+            .actions, .details {
+                grid-column: 2;
+            }
+        }
+    }
+}
+
+article.post-all-caught-up {
+    grid-column: 2;
+    border-bottom: 1px solid var(--post-border);
+    margin-bottom: 16px;
+    margin-right: 12px;
+    padding-bottom: 44px;
+    text-align: center;
+
+    img {
+        width: 96px;
+        height: 96px;
+        margin: 35px 0 4px;
+    }
+
+    h2 {
+        @include text('big');
+        margin: 0
+    }
+
+    div {
+        @include text('small-light');
+    }
+
+    a {
+        @include link('small-bold');
+        text-decoration: none;
+        cursor: default;
+    }
+
+    @include mobile-layout {
+        grid-column: 1/-1;
+        margin-right: 0;
+        margin-bottom: 0;
+    }
+}

@@ -1,0 +1,113 @@
+
+.media {
+    justify-content: center;
+    background-color: black;
+    border-radius: 4px;
+    display: grid;
+    grid-template-columns: 1fr;
+
+    img {
+        object-fit: cover;
+        width: 100%;
+        height: 100%;
+        border-radius: 4px;
+    }  
+
+    .video {
+        position: relative;
+        width: 100%;
+        justify-content: center;
+        display: grid;
+        grid-template-columns: 1fr;
+
+        video {
+            margin: auto;
+        }
+
+        .play {
+            position: absolute;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: inherit;
+            top: 50%;
+            left: 50%;
+    
+            & > span {
+                width: 100%;
+                height: 100%;
+                justify-content: center;
+                display: flex;
+                align-items: center;
+                
+                & > span {
+                    background-image: url(/src/assets/images/video-icons.png);
+                    background-repeat: no-repeat;
+                    background-position: 0 0;
+                    height: 135px;
+                    width: 135px;
+                }
+            }  
+        }   
+    
+        .sound {
+            position: relative;
+            display: block;
+            bottom: 16px;
+            right: 16px;
+            transform: translateY(-50%);
+            width: 100%;
+            height: 0;
+            
+            & > span {
+                width: 100%;
+                height: 100%;
+                justify-content: end;
+                display: flex;
+                align-items: end;
+                
+                & > button {
+                    width: 28px;
+                    height: 28px;
+                    background-color: rgb(38, 38, 38);
+                    border-radius: 50%;
+                    border: 0;
+                    
+                    & > svg {
+                        background-image: url(/src/assets/images/video-icons.png);
+                        background-repeat: no-repeat;
+                        background-position: 0 0;
+                        display: block;
+                        color: white;
+                        margin: auto;
+                    }
+    
+                    &:active {
+                        background-color: rgb(27, 27, 27);
+                    }
+                }
+                
+            }  
+        }
+    }
+    
+    .preview {
+        position: relative;
+        width: 100%;
+        justify-content: center;
+        display: grid;
+        grid-template-columns: 1fr;
+
+        .icon {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            color: white
+        }
+    }
+
+    @include mobile-layout { 
+        img {
+            border-radius: 0;
+        }
+    }
+}

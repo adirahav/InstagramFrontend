@@ -1,0 +1,17 @@
+.hide-content {
+    visibility: hidden;
+}
+
+.container {
+    min-height: 100vh;
+    height: max-content;
+}
+
+@include mobile-layout {
+    .desktop { display: none }
+}
+
+
+@include desktop-layout {
+    .mobile { display: none }
+}

@@ -1,0 +1,355 @@
+/* responsive layout */
+@mixin mobile-layout {
+  @media (max-width: $padded-break-mobile) { 
+		@content;
+	}
+}
+
+@mixin desktop-layout {
+  @media (min-width: $padded-break-desktop) {
+		@content;
+	}
+}
+
+@mixin layout-grid-template-columns($platform) {
+  @if $platform == 'mobile' {
+    grid-template-columns: minmax($layout-padding, 1fr) minmax(auto, calc(#{$break-mobile})) minmax($layout-padding, 1fr);
+  }
+
+  @if $platform == 'desktop' {
+    grid-template-columns: $sidenav-width 1fr;
+  }
+
+  @if $platform == 'desktop-logout' {
+    grid-template-columns: auto 1fr;
+  }
+}
+
+@mixin base-layout($platform) {
+  display: grid;
+	grid-template-columns: $layout-padding 1fr $layout-padding;
+  height: calc(100vh);
+
+  > *:not(.full) { 
+    grid-column: 2;
+  }
+
+  > *.full { 
+    grid-column: 1/-1;
+  }
+
+  @if $platform == 'mobile' {
+    header {
+      display: grid;
+
+      &.inner-page {
+        display: flex;
+
+        border-bottom: 1px solid var(--modal-header-border);
+        text-align: center;
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
+
+        h2 {
+            @include text('medium-bold');
+            margin: 0 0 2px 0;
+        }
+        
+        svg {
+            margin: 0;
+            display: block;
+        }
+
+        span {
+            width: 26px;
+        }
+      }
+
+      &.main-page, &.inner-page {
+        position: absolute;
+        top: 0;
+        height: 50px;
+        width: 100%;
+        z-index: 1000;
+        background: white;
+        padding: 0 10px;
+        box-sizing: border-box;
+      }
+
+      
+    }
+
+    > *:not(.mobile-full) { 
+      grid-column: 2;
+    }
+  
+    > *.mobile-full { 
+      grid-column: 1/-1;
+    }
+  }
+
+}
+
+@mixin header-grid-template-columns($platform) {
+  @if $platform == 'mobile' {
+    grid-template-columns: minmax($layout-padding, 1fr) minmax(auto, calc(#{$break-mobile})) minmax($layout-padding, 1fr)
+  }
+
+  @if $platform == 'desktop' {
+    grid-template-columns: minmax($layout-padding, 1fr) 200px minmax(auto, calc(#{$break-desktop} - 200px)) minmax($layout-padding, 1fr)
+  }
+}
+
+@mixin footer-grid-template-columns($media) {
+  grid-template-columns: minmax($layout-padding, 1fr) minmax(auto, $media) minmax($layout-padding, 1fr)
+}
+
+@mixin button($type: 'default') {
+  border: 0;
+  text-transform: none;
+  width: -webkit-min-content;
+  width: -moz-min-content;
+  width: fit-content;
+  margin: auto;
+  
+  @if str-index($type, 'default') or str-index($type, 'light') {
+    background-color: var(--button-default-background);
+    color: var(--button-default-text);
+    border-radius: 8px;
+    height: 32px;
+    font-size: rem(14px);
+    font-weight: 600;
+    padding: 5px 16px;
+    box-sizing: border-box;
+    
+    @if str-index($type, 'height') {
+      height: 44px;
+    }
+
+    @if str-index($type, 'hover') {
+      background-color: var(--button-default-background-hover);
+      color: var(--button-default-text-hover);
+    }
+
+    @media (max-width: $padded-break-mobile) { 
+      padding-top: 6px!important;
+    }
+  }
+
+  @if str-index($type, 'default') and str-index($type, 'disabled') {
+    background-color: var(--button-default-background-disabled);
+
+  }
+
+  @if str-index($type, 'light') {
+    background-color: var(--button-light-background);
+    color: var(--button-light-text);
+
+    @if str-index($type, 'hover') {
+      background-color: var(--button-light-background-hover);
+      color: var(--button-light-text-hover);
+    }
+  }
+
+  @if str-index($type, 'modal') {
+    background-color: var(--button-modal-background);
+    color: var(--button-modal-text);
+    font-size: rem(14px);
+    font-weight: 400;
+    width: 100%;
+    height: 48px;
+    border-top: 1px solid var(--button-modal-border);
+
+    @if str-index($type, 'error') { 
+      color: var(--button-modal-error-text);
+      font-weight: 700;
+    }
+    @else if str-index($type, 'warning') { 
+      color: var(--button-modal-warning-text);
+      font-weight: 700;
+    }
+  }
+
+  @if str-index($type, 'link') {
+
+    @if str-index($type, 'tiny') {
+      font-size: rem(12px);
+    }
+    @else if str-index($type, 'small') {
+      font-size: rem(14px);
+    }
+    
+    font-weight: 600;
+    color: var(--text-action);
+    background: transparent;
+    margin: 0;
+    padding: 0;
+  
+    @if str-index($type, 'hover') {
+      color: var(--text-action-hover);
+      cursor: default;
+    }
+
+    @if str-index($type, 'light') {
+      color: var(--text-light);
+
+      @if str-index($type, 'hover') {
+        color: #a3a3a3;
+        cursor: default;
+      }
+    }
+  }
+  
+
+  @if $type == 'action' {
+    font-size: rem(12px);
+    font-weight: 600;
+    color: var(--text-action-dark);
+    background: transparent;
+    margin: 0;
+    padding: 0;
+  }
+
+  @if $type == 'action-hover' {
+    color: var(--text-action-hover);
+    cursor: default;
+    background: transparent;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+@mixin text($type: 'small-bold') {
+  @if str-index($type, 'light') {
+    color: var(--text-light);
+  }
+  @else  {
+    color: var(--text);
+  }
+
+  @if str-index($type, 'tiny') {
+    font-size: rem(12px);
+  }
+  @else if str-index($type, 'mini') {
+    font-size: rem(13px);
+  }
+  @else if str-index($type, 'small') {
+    font-size: rem(14px);
+  } 
+  @else if str-index($type, 'medium') {
+    font-size: rem(16px);
+  }
+  @else if str-index($type, 'big') {
+    font-size: rem(20px);
+    font-weight: 400;
+  }
+
+  @else if str-index($type, 'huge') {
+    font-size: rem(30px);
+    font-weight: 400;
+  }
+
+  @if str-index($type, 'bold') {
+    font-weight: 600;
+  }
+}
+
+@mixin text-blank($type: 'medium-bold') {
+  color: var(--text-blank);
+
+  @if str-index($type, 'micro-tiny') {
+    font-size: rem(11px);
+  } 
+  @else if str-index($type, 'tiny') {
+    font-size: rem(12px);
+  }
+  @else if str-index($type, 'small') {
+    font-size: rem(14px);
+  } 
+  @else if str-index($type, 'medium') {
+    font-size: rem(16px);
+  }
+  @else if str-index($type, 'big') {
+    font-size: rem(20px);
+    font-weight: 400;
+  }
+
+  @if str-index($type, 'bold') {
+    font-weight: 700;
+  }
+}
+
+@mixin link($type: 'small-bold') {
+  color: var(--text-action);
+
+  @if str-index($type, 'tiny') {
+    font-size: rem(12px);
+  } 
+
+  @if str-index($type, 'small') {
+    font-size: rem(14px);
+  } 
+
+  @if str-index($type, 'bold') {
+    font-weight: 600;
+  } 
+  
+  @if str-index($type, 'hover') {
+    cursor: default;    
+    color: var(--text-action-hover);
+  } 
+}
+
+@mixin loading($type: 'dark') {
+  height: 18px;
+  width: 18px;
+  margin: auto;
+
+  animation-name: loading;
+  animation-duration: .8s;
+  animation-iteration-count: infinite;
+  animation-timing-function: steps(8,end);  
+
+  @if str-index($type, 'light') {
+    fill: rgb(245, 245, 245);
+  } 
+}
+
+/* scrollbar */
+@mixin scrollbar($type: 'desktop') {
+    overflow: auto;
+
+    &::-webkit-scrollbar {
+        width: 12px;
+
+        &-thumb {
+            background-color: var(--scrollbar-thumb-background);
+            border-radius: 0;
+            
+            &:hover {
+              background-color: var(--scrollbar-thumb-background-hover);
+              border: 1px solid var(--scrollbar-track-border-hover);
+          }
+        }
+          
+        &-track {
+            background-color: var(--scrollbar-track-background);
+            border-radius: 0;
+    
+            &:hover {
+                border: 1px solid var(--scrollbar-track-border-hover);
+            }
+        }
+
+       
+    }
+
+    @if str-index($type, 'mobile') {
+      &::-webkit-scrollbar {
+        width: 0;
+      }
+      
+    } 
+    
+}

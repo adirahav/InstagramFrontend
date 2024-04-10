@@ -1,0 +1,32 @@
+.main-layout {
+    
+    @include scrollbar('desktop');
+    
+    @include mobile-layout {
+        @include base-layout('mobile'); 
+        @include layout-grid-template-columns('mobile');
+    }
+
+    @include desktop-layout {
+        @include base-layout('desktop'); 
+        @include layout-grid-template-columns('desktop');
+    }
+
+    &.logout, &.logging {
+        @include desktop-layout {
+            @include layout-grid-template-columns('desktop-logout');
+        }
+    }
+
+    & > .signin {
+        margin: 0 auto;
+        justify-content: center;
+        display: grid;
+    }
+
+    @include mobile-layout {
+        @include scrollbar("mobile");
+        height: calc(100vh - 44px);
+    }
+}
+

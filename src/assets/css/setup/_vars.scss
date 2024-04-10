@@ -1,0 +1,117 @@
+:root {
+    /* palette */
+    --palette1: #ffffff;
+    --palette2: #f5f5f5;    /*245 245 245*/ 
+    --palette3: #f1f1f1;    /*241 241 241*/
+    --palette4: #ececec;    /*236 236 236*/
+    --palette5: #e4e4e4;    /*228 228 228*/
+    --palette6: #dbdbdb;    /*219  219 219*/
+    --palette7: #dadde1;    
+    --palette8: #cccccc;    /*204 204 204*/
+    --palette9: #c7c7c7;    
+    --palette10: #c1c1c1;    /*193 193 193*/
+    --palette11: #a8a8a8;    /*168 168 168*/
+    --palette12: #7d7d7d;    
+    --palette13: #737373;    /*115 115 115*/
+    --palette14: #262626;   /*038 038 038*/
+    --palette15_transparent: #1a1a1acc;    
+    --palette16: #000000;
+    --palette16_transparent: #00000011;
+    --palette16_transparent2: #00000026;
+    --palette16_transparent3: #0000004d;
+    --palette16_transparent4: #00000080;
+    --palette17: #0095f6;   /*0, 149, 246*/
+    --palette18: #1877f2;   /*24, 119, 242*/
+    --palette19: #00376b;
+    --palette20: #ff3040;
+    --palette21: #ed4956;
+    
+    --background: var(--palette1);
+    --overlay-background: var(--palette16_transparent4);
+    --text: var(--palette16);
+    --text-error: var(--palette10);
+    --text-success: var(--palette16);
+    --text-message: var(--palette16);
+    --text-warning: var(--palette16);
+    --text-link: var(--palette19);
+    --text-light: var(--palette13);
+    --text-blank: var(--palette1);
+    --text-action: var(--palette17);
+    --text-action-hover: var(--palette19);
+    --text-action-dark: var(--palette14);
+    
+    --sidenav-border: var(--palette5);
+    --footer-background: var(--palette13);
+
+    --scrollbar-thumb-background: var(--palette10);
+    --scrollbar-track-background: var(--palette3);
+    --scrollbar-thumb-background-hover: var(--palette11);
+    --scrollbar-track-border-hover: var(--palette3);
+
+    --alert-background: var(--palette1);
+    --alert-header-background: var(--palette1);
+    --alert-icon-background-hover: var(--palette5);
+
+    --button-default-background: var(--palette17);
+    --button-default-background-hover: var(--palette18);
+    --button-default-background-disabled: #4cb5f9;
+    --button-default-text: var(--palette1);
+    --button-default-text-hover: var(--palette1);
+
+    --button-light-background: var(--palette4);
+    --button-light-background-hover: var(--palette6);
+    --button-light-text: var(--palette16);
+    --button-light-text-hover: var(--palette16);
+
+    --button-modal-background: var(--palette1);
+    --button-modal-text: var(--palette16);
+    --button-modal-border: var(--palette6);
+    --button-modal-error-text: var(--palette17);
+    --button-modal-warning-text: var(--palette21);
+
+    --icon-background: var(--palette15_transparent);
+    --icon-shadow: var(--palette16_transparent2);
+    --icon-color: var(--palette16);
+    --icon-color-hover: var(--palette12);
+    --icon-liked-color: var(--palette20);
+    --icon-close-color: var(--palette1);
+    --icon-background-hover: var(--palette12);
+    
+    --post-border: var(--palette5);
+
+    --modal-background: var(--palette1);
+    --modal-header-border: var(--palette6);
+    --modal-textarea-placeholder: var(--palette8);
+    --modal-textarea-border: var(--palette7);
+    --modal-counter: var(--palette9);
+    --modal-header-separator: var(--palette7);
+
+    --profile-separator: var(--palette6);
+    --profile-separator-selected: var(--palette16);
+    --profile-post-mask-background: var(--palette16_transparent3);
+    
+    --mobile-overlay-background: var(--palette16);
+    --mobile-nav-background: var(--palette1);
+    --mobile-suggestion-background: var(--palette2);
+    --mobile-card-background: var(--palette1);
+    --mobile-card-border: var(--palette4);
+    --mobile-card-shadow: var(--palette16_transparent);
+
+}
+
+$tmpl1: repeat(auto-fill, minmax(250px, 1fr));
+
+
+$sidenav-width: 245px;
+$footer-height: 40px;
+$logo-width: 103px;
+$logo-height: 29px;
+
+/* responsive layout */
+$layout-padding: 10px;
+
+$break-mobile: 767px;
+$break-desktop: 768px;
+
+$padded-break-mobile: $break-mobile + $layout-padding * 2;        // screen <= 807px
+$padded-break-desktop: $break-desktop + $layout-padding * 2;      // screen >    807px
