@@ -44,6 +44,7 @@
             .loading {
                 grid-column: 2;
                 @include loading("dark");
+                margin-top: 10px;
                 margin-bottom: 4px;
             }
         }
@@ -158,6 +159,7 @@
 
                 .loading {
                     grid-column: 1/-1;
+                    margin-bottom: 48px;
                 }
             }
 
