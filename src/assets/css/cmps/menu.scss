@@ -514,6 +514,42 @@ nav {
         animation: slide-to-left 0.3s forwards;    
     }
 
+    .placeholder {
+        height: 56px;
+
+        &.title {
+            margin: 0;
+            height: 34px;
+            padding-top: 10px;
+
+            h3 {
+                height: 14px;
+                width: 100px;
+                margin: 12px 0;
+                border-radius: 4px;
+            }
+        }
+        
+        .avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+        }
+
+        .message {
+            height: 14px;
+            width: calc(100% - 34px);
+            margin: 12px 22px 12px 12px;
+            border-radius: 4px;
+        }
+
+        .image {
+            width: 44px;
+            height: 44px;
+            border-radius: 4px;
+        }
+    }
+
     @include mobile-layout {
 
         width: 100%;

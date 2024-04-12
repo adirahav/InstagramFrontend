@@ -9,13 +9,14 @@ import { showMenuMoreOptions } from "./MenuMoreOptions"
 import { useSelector } from "react-redux"
 import { showMenuNotifications } from "./MenuNotifications"
 import { PostCreate } from "./PostCreate"
-import { loadNotifications, isNotificationsVisible } from "../store/actions/user.actions"
+import { loadNotifications, showNotifications } from "../store/actions/user.actions"
 
 export function Menu({position, onExpandingChanged}) {
     const [menuClass, setMenuClass] = useState('')
     const [notificationsClass, setNotificationsClass] = useState('')
     const loggedinUser = useSelector(storeState => storeState.userModule.loggedinUser)
     const hasNewNotification = useSelector(storeState => storeState.userModule.notifications?.hasNewNotification)
+    const isNotificationsVisible = useSelector(storeState => storeState.userModule.notifications?.isVisible)
     const unreadMessagesCount = loggedinUser.unreadMessages?.length ?? 0
 
     // create post   
@@ -55,31 +56,49 @@ export function Menu({position, onExpandingChanged}) {
     }
 
     const handleOpenNotifications = () => {
-        setNotificationsClass((prevNotificationsClass) => {
+      /*  setNotificationsClass((prevNotificationsClass) => {
             if (prevNotificationsClass === "active") {
+                //showNotifications(false)
                 return ""
             }
             else {
                 showMenuNotifications({
                     onClosed: { callback: async () => { 
+                        showNotifications(false)
                         setNotificationsClass("")
                     } }, 
                 }) 
 
-                fetchNotifications()
-                isNotificationsVisible(false)
+                //fetchNotifications()
+                showNotifications(true)
                 return "active"
             }
-        })
+        })*/
+
+        if (isNotificationsVisible) {
+            showNotifications(false)
+        } else {
+            showMenuNotifications({
+                onClosed: { callback: async () => { 
+                    showNotifications(false)
+                } }, 
+            }) 
+
+            showNotifications(true)
+        }
     }
 
-    async function fetchNotifications() {
+    useEffect(() => {
+        setNotificationsClass(isNotificationsVisible ? 'active' : '')
+    }, [isNotificationsVisible])
+
+    /*async function fetchNotifications() {
         try {
             await loadNotifications(loggedinUser)
         } catch (error) {
             console.error('Error fetching notifications:', error)
         }
-    }
+    }*/
    
     const navClass = `menu ${position}`
     

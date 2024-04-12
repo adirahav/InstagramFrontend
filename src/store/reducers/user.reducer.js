@@ -10,6 +10,7 @@ export const LOGOUT = 'LOGOUT'
 export const GET_NOTIFICATIONS = 'GET_NOTIFICATIONS'
 export const HAS_NEW_NOTIFICATION = 'HAS_NEW_NOTIFICATION'
 export const IS_NOTIFICATIONS_VISIBLE = 'IS_NOTIFICATIONS_VISIBLE'
+export const IS_NOTIFICATIONS_LOADING = 'IS_NOTIFICATIONS_LOADING'
 export const GET_SUGGESTIONS = 'GET_SUGGESTIONS'
 export const GET_FOLLOWINGS = 'GET_FOLLOWINGS'
 export const FOLLOW_USER = 'FOLLOW_USER'
@@ -69,8 +70,9 @@ export function userReducer(state = initialState, action = {}) {
                 ...state,
                 notifications: { 
                     list: action.notifications,
-                    hasNewNotification: false,
-                    isVisible: action.isVisible 
+                    hasNewNotification: action.hasNewNotification,
+                    isLoading: action.isLoading,
+                    isVisible: action.isVisible
                 }
             } 
 
@@ -121,6 +123,15 @@ export function userReducer(state = initialState, action = {}) {
                 notifications: { 
                         ...state.notifications, 
                         isVisible: action.isVisible
+                    },
+            }
+
+        case IS_NOTIFICATIONS_LOADING:
+            return {
+                ...state,
+                notifications: { 
+                        ...state.notifications, 
+                        isLoading: action.isLoading
                     },
             }
 

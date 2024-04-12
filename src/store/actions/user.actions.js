@@ -2,7 +2,7 @@ import { authService } from "../../services/auth.service.js"
 import { socketService } from "../../services/socket.service.js"
 import { userService } from "../../services/user.service.js"
 import { LOADING_DONE, LOADING_START } from "../reducers/app.reducer.js"
-import { LOGGEDIN_USER, UPDATE_USER, SIGNUP, LOGIN, LOGOUT, GET_SUGGESTIONS, GET_NOTIFICATIONS, GET_FOLLOWINGS, FOLLOW_USER, UNFOLLOW_USER, SET_FOLLOWER_ONLINE, HAS_NEW_NOTIFICATION, SAVE_UNREAD_MESSAGE, UNSAVE_READ_MESSAGE, IS_NOTIFICATIONS_VISIBLE, SAVE_UNREAD_NOTIFICATION, UNSAVE_READ_NOTIFICATION } from "../reducers/user.reducer.js"
+import { LOGGEDIN_USER, UPDATE_USER, SIGNUP, LOGIN, LOGOUT, GET_SUGGESTIONS, GET_NOTIFICATIONS, GET_FOLLOWINGS, FOLLOW_USER, UNFOLLOW_USER, SET_FOLLOWER_ONLINE, HAS_NEW_NOTIFICATION, SAVE_UNREAD_MESSAGE, UNSAVE_READ_MESSAGE, IS_NOTIFICATIONS_VISIBLE, SAVE_UNREAD_NOTIFICATION, UNSAVE_READ_NOTIFICATION, IS_NOTIFICATIONS_LOADING } from "../reducers/user.reducer.js"
 import { store } from "../store.js"
 
 export function setLoggedinUser(loggedinUser) {
@@ -67,8 +67,9 @@ export async function logout() {
 
 export async function loadNotifications(loggedinUser) {
     try {
+        store.dispatch({type: IS_NOTIFICATIONS_LOADING, isLoading: true})
        const notifications = await userService.queryNotifications(loggedinUser)
-        store.dispatch({type: GET_NOTIFICATIONS, notifications, isVisible: true})
+        store.dispatch({type: GET_NOTIFICATIONS, notifications, hasNewNotification: false, isLoading: false, isVisible: true})
     } catch(err) {
         console.log("Had issues loading notifications")
         throw err
@@ -84,7 +85,7 @@ export function hasNewNotifications(existNewNotifications) {
     } 
 }
 
-export function isNotificationsVisible(isVisible) {
+export function showNotifications(isVisible) {
     try {
         store.dispatch({type: IS_NOTIFICATIONS_VISIBLE, isVisible})
     } catch(err) {

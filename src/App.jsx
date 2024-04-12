@@ -21,7 +21,7 @@ import { socketService, SOCKET_CHAT_NEW_PRIVATE_MESSAGE, SOCKET_FOLLOWER_SET_OFF
 import { hasNewNotifications, loadNotifications, saveUnreadMessage, saveUnreadNotification, setFollowerOnline } from './store/actions/user.actions.js'
 import { showNewMessage } from './store/actions/conversation.actions.js'
 
-function App() {//socket.connected
+function App() {
   const [logging, setLogging] = useState(false)
   const loggedinUser = useSelector(storeState => storeState.userModule.loggedinUser)
   const notifications = useSelector(storeState => storeState.userModule.notifications)
@@ -66,7 +66,7 @@ function App() {//socket.connected
 
   function newNotification() {
     //console.log("NEW_NOTIFICATION")
-    
+      
     if (notifications?.isVisible) {
       loadNotifications()
     }
