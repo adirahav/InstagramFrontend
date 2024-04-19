@@ -15,6 +15,7 @@ export function Tags() {
     const urlParams = useParams()
     const navigate = useNavigate()
     const [isLoading, setIsLoading] = useState(false)
+    const [swipingToRefresh, setSwipeToRefresh] = useState(false)
     const [sideMenuExpand, setSideMenuExpand] = useState('wide')
 
     const PAGING_SIZE = 30
@@ -31,6 +32,7 @@ export function Tags() {
         try {
             const posts = await postService.getByTag(urlParams.tag, PAGING_SIZE)
             setTaggedPosts(posts)
+            setSwipeToRefresh(false)
         } catch (error) {
             console.error(`Error fetching posts by tag #${urlParams.tag}:`, error)
             showErrorAlert({
@@ -84,6 +86,19 @@ export function Tags() {
         setSideMenuExpand(menuExpand)
     }
 
+    // swipe to refresh
+    const handleTouchStart = (event) => {
+        const startY = event.touches[0].clientY
+        if (window.scrollY === 0 && startY < 50) {
+            setSwipeToRefresh(true)
+        }
+    }
+
+    const handleTouchEnd = () => {
+        resetPosts()
+        fetchPosts()
+    }
+
     if (!loggedinUser) {
         navigate('/')
     }
@@ -99,13 +114,16 @@ export function Tags() {
     
     const tagImage = taggedPosts.list[Math.floor(Math.random() * taggedPosts.list.length)].media[0]
     
+    const mobileHeaderClass = `inner-page mobile ${swipingToRefresh ? 'swiping' : ''}`
+
     return (<>
         <aside className={`sidenav desktop ${sideMenuExpand}`}>
             <Logo />    
             <Menu position="sidenav" onExpandingChanged={handleExpandingChanged} />
         </aside>
         <main className="tag container mobile-full">
-            <header className='inner-page mobile'>
+            <header className={mobileHeaderClass} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
+                {swipingToRefresh && <div className='swiping-to-refresh'><LoadingIcon.button /></div>}
                 <BackIcon.mobile onClick={handlelBack} />
                 <h2>#{urlParams.tag}</h2>
                 <div onClick={handleOpenMoreOptionsMenu}>&nbsp;{/*<MoreIcon.post  />*/}</div>

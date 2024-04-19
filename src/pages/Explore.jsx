@@ -3,11 +3,12 @@ import { Menu } from '../cmps/Menu'
 import { Avatar } from '../cmps/Avatar'
 import { Logo } from '../cmps/Logo'
 import { Outlet, useNavigate, useParams } from 'react-router-dom'
-import { AlertIcon, BackIcon, MoreIcon } from '../assets/icons'
+import { AlertIcon, BackIcon, LoadingIcon, MoreIcon } from '../assets/icons'
 import { Media } from '../cmps/Media'
 import { showMenuMoreOptions } from '../cmps/MenuMoreOptions'
 import { useSelector } from 'react-redux'
 import { postService } from '../services/post.service'
+import { resetPosts } from '../store/actions/post.actions'
 
 export function Explore() {
     const [exploredPosts, setExploredPosts] = useState()
@@ -15,6 +16,7 @@ export function Explore() {
     const urlParams = useParams()
     const navigate = useNavigate()
     const [isLoading, setIsLoading] = useState(false)
+    const [swipingToRefresh, setSwipeToRefresh] = useState(false)
     const [sideMenuExpand, setSideMenuExpand] = useState('wide')
 
     const PAGING_SIZE = 30
@@ -32,6 +34,7 @@ export function Explore() {
         try {
             const posts = await postService.explore(1, PAGING_SIZE)
             setExploredPosts(posts)
+            setSwipeToRefresh(false)
         } catch (error) {
             console.error(`Error fetching explore posts:`, error)
             showErrorAlert({
@@ -85,24 +88,41 @@ export function Explore() {
         setSideMenuExpand(menuExpand)
     }
 
+    // swipe to refresh
+    const handleTouchStart = (event) => {
+        const startY = event.touches[0].clientY
+        if (window.scrollY === 0 && startY < 50) {
+            setSwipeToRefresh(true)
+        }
+    }
+
+    const handleTouchEnd = () => {
+        resetPosts()
+        fetchPosts()
+    }
+
     if (!loggedinUser) {
         navigate('/')
     }
 
+    const mobileHeaderClass = `inner-page mobile ${swipingToRefresh ? 'swiping' : ''}`
+    
     return (<>
         <aside className={`sidenav desktop ${sideMenuExpand}`}>
             <Logo />    
             <Menu position="sidenav" onExpandingChanged={handleExpandingChanged} />
         </aside>
         <main className="explore container mobile-full">
-            <header className='inner-page mobile'>
+            <header className={mobileHeaderClass} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
+                {swipingToRefresh && <div className='swiping-to-refresh'><LoadingIcon.button /></div>}
                 <BackIcon.mobile onClick={handlelBack} />
                 <h2>Explore</h2>
                 <span onClick={handleOpenMoreOptionsMenu}>&nbsp;{/*<MoreIcon.post  />*/}</span>
-            </header>  
+            </header>
+ 
             <section className='main'>
                 <article className='posts'>
-                    <ExploredPosts posts={exploredPosts.list} />
+                    {!swipingToRefresh && <ExploredPosts posts={exploredPosts.list} />}
                 </article>
             </section>
         </main>

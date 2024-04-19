@@ -75,9 +75,32 @@
         background: white;
         padding: 0 10px;
         box-sizing: border-box;
+
+        &.swiping {
+            overflow-y: hidden;
+        }
+
+        .swiping-to-refresh {
+            top: 20px;
+            justify-content: center;
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            left: calc(50% - 9px);
+            z-index: 1005;
+
+            svg {
+              @include loading('dark');
+              position: fixed;
+            }
+        }
       }
 
-      
+      &.inner-page {
+        .swiping-to-refresh {
+          top: 60px;
+        }
+      }
     }
 
     > *:not(.mobile-full) { 

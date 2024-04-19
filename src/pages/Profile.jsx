@@ -17,6 +17,7 @@ export function Profile() {
     const urlParams = useParams()
     const navigate = useNavigate()
     const [isLoading, setIsLoading] = useState(false)
+    const [swipingToRefresh, setSwipeToRefresh] = useState(false)
     const [sideMenuExpand, setSideMenuExpand] = useState('wide')
     
     useEffect(() => {
@@ -35,6 +36,7 @@ export function Profile() {
     // fetch profile data
     async function fetchProfileData() {
         setProfileInfo(await profileService.query(urlParams.username))
+        setSwipeToRefresh(false)
     }
 
     if (!profileInfo) return <></>
@@ -155,22 +157,38 @@ export function Profile() {
         setSideMenuExpand(menuExpand)
     }
 
+    // swipe to refresh
+    const handleTouchStart = (event) => {
+        const startY = event.touches[0].clientY
+        if (window.scrollY === 0 && startY < 50) {
+            setSwipeToRefresh(true)
+        }
+    }
+
+    const handleTouchEnd = () => {
+        fetchProfileData()
+    }
+
+
     if (!loggedinUser) {
         navigate(-1)
     }
     
+    const mobileHeaderClass = `inner-page mobile ${swipingToRefresh ? 'swiping' : ''}`
+
     return (<>
         <aside className={`sidenav desktop ${sideMenuExpand}`}>
             <Logo />    
             <Menu position="sidenav" onExpandingChanged={handleExpandingChanged} />
         </aside>
         <main className="profile container mobile-full">
-            <header className='inner-page mobile'>
+            <header className={mobileHeaderClass} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
+                {swipingToRefresh && <div className='swiping-to-refresh'><LoadingIcon.button /></div>}
                 <span><BackIcon.mobile onClick={handlelBack} /></span>
                 <h2>{profileInfo.user.username}</h2>
                 <span onClick={handleOpenMoreOptionsMenu}><MoreIcon.menu /></span>
             </header>  
-            <section className={`basic-info ${profileInfo.info.canEdit ? 'self' : ''}`}>
+            {!swipingToRefresh && <><section className={`basic-info ${profileInfo.info.canEdit ? 'self' : ''}`}>
                 <div className='desktop'>
                     <Avatar size="giant" hasBorder={false} textPosition="none" user={profileInfo.user} />
                 </div>
@@ -211,7 +229,7 @@ export function Profile() {
                     {postsType === 'saved' && <UserPosts posts={profileInfo.saved} />}
                     {postsType === 'tagged' && <UserPosts posts={profileInfo.tagged} />}
                 </article>
-            </section>
+            </section></>}
         </main>
         <footer className='mobile full'>
             <Menu position="footer" />

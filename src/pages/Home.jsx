@@ -11,7 +11,7 @@ import { Login } from '../cmps/Login'
 import { useSelector } from 'react-redux'
 import { loadPosts, resetPosts} from '../store/actions/post.actions'
 import { loadFollowings } from '../store/actions/user.actions'
-import { BackIcon } from '../assets/icons'
+import { BackIcon, LoadingIcon } from '../assets/icons'
 import { SOCKET_NOTIFICATION_POST_ADDED } from '../services/socket.service'
 import promoImage1 from '../assets/images/promo-1.png'
 import promoImage2 from '../assets/images/promo-2.png'
@@ -20,6 +20,7 @@ import promoImage4 from '../assets/images/promo-4.png'
     
 export function Home() {
     const [loadingMorePosts, setLoadingMorePosts] = useState(false)
+    const [swipingToRefresh, setSwipeToRefresh] = useState(false)
     const [promoCounter, setPromoCounter] = useState(1)
     const [promoClasses, setPromoClasses] = useState(1)
     const [sideMenuExpand, setSideMenuExpand] = useState('wide')
@@ -47,6 +48,7 @@ export function Home() {
         try {
             await loadPosts(postModule.paging, POSTS_PAGING_SIZE, searchParams.get('variant'))
             setLoadingMorePosts(false)
+            setSwipeToRefresh(false)
         } catch (error) {
             console.error('Error fetching posts:', error)
             showErrorAlert({
@@ -78,7 +80,7 @@ export function Home() {
     }, [postModule.posts])
     
     useEffect(() => {
-        if (loggedinUser && !isLoading && !loadingMorePosts) {
+        if (loggedinUser && !isLoading && !loadingMorePosts && !swipingToRefresh) {
             const observer = new IntersectionObserver(async (entries) => {
                 const entry = entries[0]
                 if (entry.isIntersecting) {
@@ -159,7 +161,31 @@ export function Home() {
             )
         }
     }, [promoCounter])
-    
+
+    const handleExpandingChanged = (menuExpand) => {
+        setSideMenuExpand(menuExpand)
+    }
+
+    const handelPressNewPostIndications = async () => {
+        resetPosts()
+        await fetchPosts()
+        //setShowNewPostsIndication(false)
+    }
+
+    // swipe to refresh
+    const handleTouchStart = (event) => {
+        const startY = event.touches[0].clientY
+        if (window.scrollY === 0 && startY < 50) {
+            setSwipeToRefresh(true)
+        }
+    }
+
+    const handleTouchEnd = () => {
+        resetPosts()
+        fetchPosts()
+    }
+
+    // login
     if (!loggedinUser) return (
         <main className='home-login'> 
             <section className='promo'>
@@ -174,18 +200,11 @@ export function Home() {
         </main>
     )
 
-    const handleExpandingChanged = (menuExpand) => {
-        setSideMenuExpand(menuExpand)
-    }
-
-    const handelPressNewPostIndications = async () => {
-        resetPosts()
-        await fetchPosts()
-        //setShowNewPostsIndication(false)
-    }
+    const mobileHeaderClass = `main-page mobile ${swipingToRefresh ? 'swiping' : ''}`
 
     return (<>
-        <header className="main-page mobile">
+        <header className={mobileHeaderClass} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
+            {swipingToRefresh && <div className='swiping-to-refresh'><LoadingIcon.button /></div>}
             <Logo />
             <Menu position="header" />
         </header>
@@ -195,35 +214,35 @@ export function Home() {
             <Menu position="sidenav" onExpandingChanged={handleExpandingChanged} />
         </aside>
         <main className="home container mobile-full">
-            <section className='center'>
-                {showNewPostsIndication && <div className="new-post-indication"><span onClick={handelPressNewPostIndications}>New Posts</span></div>}
-                {variant !== 'past_posts' && followings && followings.length > 0 && <section className='followings'>
-                    <FollowingsUsers followings={followings} />
-                </section>}
-                <section className='suggestion mobile'>
-                    <h2>Suggested for you</h2>
-                    <SuggestedUsersList />
-                </section>
-                {variant === 'past_posts' && <section className='past-posts'><NavLink to="/"><BackIcon.desktop /><BackIcon.mobile /><h1>Past Posts</h1></NavLink></section>}
-                <PostsList posts={postModule.posts} onPostDetailsPress={onPostDetailsPress} variant={variant} />
-                <Outlet context={{ }} />
-                <div id="loading" style={{ height: '1px', backgroundColor: 'transparent' }} ref={loadingRef}></div>
-            </section>
-            <section className='side'>
-                <section className='user-profile'>
-                    <div>
-                        <Avatar size="medium" textPosition="right" hasBorder={false} label={loggedinUser.Fullname} bigLabel={true} user={loggedinUser} />
-                        {/*<button>Switch</button>TODO*/}
-                    </div>
-                </section>
-                <section className='suggestion desktop'>
-                    <div>
-                        <h2>Suggested for you</h2>
-                        {/*<button>See All</button>TODO*/}
-                    </div>
-                    <SuggestedUsersList />
-                </section>
-            </section>    
+                    <section className='center'>
+                        {showNewPostsIndication && <div className="new-post-indication"><span onClick={handelPressNewPostIndications}>New Posts</span></div>}
+                        {variant !== 'past_posts' && followings && followings.length > 0 && <section className='followings'>
+                            <FollowingsUsers followings={followings} />
+                        </section>}
+                        <section className='suggestion mobile'>
+                            <h2>Suggested for you</h2>
+                            <SuggestedUsersList />
+                        </section>
+                        {variant === 'past_posts' && !swipingToRefresh && <section className='past-posts'><NavLink to="/"><BackIcon.desktop /><BackIcon.mobile /><h1>Past Posts</h1></NavLink></section>}
+                        {!swipingToRefresh && <PostsList posts={postModule.posts} onPostDetailsPress={onPostDetailsPress} variant={variant} />}
+                        <Outlet context={{ }} />
+                        <div id="loading" style={{ height: '1px', backgroundColor: 'transparent' }} ref={loadingRef}></div>
+                    </section>
+                    <section className='side'>
+                        <section className='user-profile'>
+                            <div>
+                                <Avatar size="medium" textPosition="right" hasBorder={false} label={loggedinUser.Fullname} bigLabel={true} user={loggedinUser} />
+                                {/*<button>Switch</button>TODO*/}
+                            </div>
+                        </section>
+                        <section className='suggestion desktop'>
+                            <div>
+                                <h2>Suggested for you</h2>
+                                {/*<button>See All</button>TODO*/}
+                            </div>
+                            <SuggestedUsersList />
+                        </section>
+                    </section> 
         </main>
         <footer className='mobile full'>
             <Menu position="footer" />
