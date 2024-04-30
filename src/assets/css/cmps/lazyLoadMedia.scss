@@ -3,8 +3,9 @@
     min-height: 50px;
     
     &.preloading {
-        filter: opacity(0.9);
-        background: white;
+        /*filter: opacity(0.9);
+        background: white;*/
+        background: #f4f4f4;
         
         &.hidden {
             display: none;
@@ -14,6 +15,10 @@
     &.loading {
         &.hidden {
             display: none;
+        }
+
+        &.img {
+            
         }
     }
 

@@ -9,8 +9,8 @@ async function uploadMedia(files) {
     const fileName = files[0]
     const fileType = utilService.getMediaType(fileName.name)
 
-    const CLOUD_NAME = "dn4zdrszh"    // sashboard --> cloud name
-    const UPLOAD_PRESET = "ml_adi"    // settings --> upload --> Upload presets --> Unsigned
+    const CLOUD_NAME = "do5lkisxf"    // sashboard --> cloud name
+    const UPLOAD_PRESET = "sksuk855"    // settings --> upload --> Upload presets --> Unsigned
     const UPLOAD_URL = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/${fileType}/upload`
 
     try {

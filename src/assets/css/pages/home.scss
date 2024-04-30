@@ -46,6 +46,12 @@
                 @include loading("dark");
                 margin-top: 10px;
                 margin-bottom: 4px;
+
+                &.lazy-media {
+                    animation: none;
+                    width: 0;
+                    height: 0;
+                }
             }
         }
 

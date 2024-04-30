@@ -9,11 +9,11 @@ import { utilService } from "../services/util.service"
 export function Login() {
     const [passwordButton, setPasswordButton] = useState({display: false, text: 'Show', inputType: 'password'})
     const [enableLoginButton, setEnableLoginButton] = useState(false)
+    const [triggeSubmit, setTriggeSubmit] = useState(null)
     const [fieldValidation, setFieldValidation] = useState({ 
         identifier: {display: false, type: null}, 
         password: {display: false, type: null} 
     })
-
     const isLoading = useSelector(storeState => storeState.appModule.isLoading)
     const loggedinUser = useSelector(storeState => storeState.userModule.loggedinUser)
 
@@ -29,6 +29,7 @@ export function Login() {
     }, [loggedinUser])
 
     const handleInputFocus = (event) => {
+        
         const { name } = event.target
         
         setFieldValidation(
@@ -107,6 +108,27 @@ export function Login() {
         )
     }, [fieldValidation])
 
+    useEffect(() => {
+        if (triggeSubmit !== null) {
+            handelOnSubmit(triggeSubmit)
+            setTriggeSubmit(null)
+        }
+
+        setEnableLoginButton(
+            (prevEnableLoginButton) => {
+                const allFieldsValid = Object.values(fieldValidation).every(field => {
+                    if (field.type === null) {
+
+                    }
+                    return field.display === true && field.type === 'valid'
+                })
+                
+                return allFieldsValid
+            }
+        )
+    }, [enableLoginButton])
+
+   
     const handleInputChanged = (event) => {
         const { name, value } = event.target
 
@@ -135,6 +157,13 @@ export function Login() {
                 return prevPasswordButton
             }
         )
+    }
+    
+    const handleKeyDown = async (event) => {
+        if (event.key === 'Enter') {
+            event.target.blur()
+            setTriggeSubmit(event)
+        }
     }
 
     const handelOnSubmit = async (event) => {
@@ -169,14 +198,14 @@ export function Login() {
                     <h2 className="logo">Instaglam</h2>
                     <div className="input">
                         <label>
-                            <input ref={identifierRef} onFocus={handleInputFocus} onBlur={handleInputBlur} onChange={handleInputChanged} required autoCapitalize="off" autoCorrect="off" autoComplete="off" maxLength="75" type="text" name="identifier"></input>
+                            <input ref={identifierRef} onFocus={handleInputFocus} onBlur={handleInputBlur} onChange={handleInputChanged} onKeyDown={handleKeyDown} required autoCapitalize="off" autoCorrect="off" autoComplete="off" maxLength="75" type="text" name="identifier"></input>
                             <span>Phone number, username, or email</span>
                         </label>
                     </div>
                     
                     <div className="input">
                         <label>
-                            <input ref={passwordRef} onFocus={handleInputFocus} onBlur={handleInputBlur} onChange={handleInputChanged} required autoCapitalize="off" autoCorrect="off" autoComplete="off" type={passwordButton.inputType} name="password"></input>
+                            <input ref={passwordRef} onFocus={handleInputFocus} onBlur={handleInputBlur} onChange={handleInputChanged} onKeyDown={handleKeyDown} required autoCapitalize="off" autoCorrect="off" autoComplete="off" type={passwordButton.inputType} name="password"></input>
                             <span>Password</span>
                             <button type="button" onClick={handleDisplayPasswordChanged} style={{display:passwordButtonStyle}}>{passwordButton.text}</button>
                         </label>

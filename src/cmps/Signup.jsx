@@ -12,6 +12,7 @@ import { onLoadingDone, onLoadingStart } from "../store/actions/app.actions"
 export function Signup() {
     const [passwordButton, setPasswordButton] = useState({display: false, text: 'Show', inputType: 'password'})
     const [enableSignupButton, setEnableSignupButton] = useState({ disable: true, loading: false })
+    const [triggeSubmit, setTriggeSubmit] = useState(null)
     const [fieldValidation, setFieldValidation] = useState({ 
         contact: {display: false, type: null}, 
         username: {display: false, type: null}, 
@@ -113,6 +114,26 @@ export function Signup() {
         )
     }, [fieldValidation])
 
+    useEffect(() => {
+        if (triggeSubmit !== null) {
+            handelOnNext(triggeSubmit)
+            setTriggeSubmit(null)
+        }
+
+        setEnableSignupButton(
+            (prevEnableSignupButton) => {
+                const allFieldsValid = Object.values(fieldValidation).every(field => {
+                    if (field.type === null) {
+
+                    }
+                    return field.display === true && field.type === 'valid'
+                })
+                
+                return allFieldsValid
+            }
+        )
+    }, [enableSignupButton])
+
     const handleInputChanged = (event) => {
         const { name, value } = event.target
 
@@ -141,6 +162,13 @@ export function Signup() {
                 return prevPasswordButton
             }
         )
+    }
+
+    const handleKeyDown = async (event) => {
+        if (event.key === 'Enter') {
+            event.target.blur()
+            setTriggeSubmit(event)
+        }
     }
 
     const handelOnNext = async (event) => {
@@ -203,21 +231,21 @@ export function Signup() {
                     </div>
                     <div className="input">
                         <label>
-                            <input ref={contactRef} onFocus={handleInputFocus} onBlur={handleInputBlur} onChange={handleInputChanged} required autoCapitalize="off" autoCorrect="off" type="text" name="contact"></input>
+                            <input ref={contactRef} onFocus={handleInputFocus} onBlur={handleInputBlur} onChange={handleInputChanged} onKeyDown={handleKeyDown} required autoCapitalize="off" autoCorrect="off" type="text" name="contact"></input>
                             <span>Mobile Number or Email</span>
                             {fieldValidation.contact.display && <span className={`icon ${fieldValidation.contact.type}`} />}
                         </label>
                     </div>
                     <div className="input">
                         <label>
-                            <input ref={fullnameRef} onFocus={handleInputFocus} onBlur={handleInputBlur} onChange={handleInputChanged} required autoCapitalize="off" autoCorrect="off" type="text" name="fullname"></input>
+                            <input ref={fullnameRef} onFocus={handleInputFocus} onBlur={handleInputBlur} onChange={handleInputChanged} onKeyDown={handleKeyDown} required autoCapitalize="off" autoCorrect="off" type="text" name="fullname"></input>
                             <span>Full Name</span>
                             {fieldValidation.fullname.display && <span className={`icon ${fieldValidation.fullname.type}`} />}
                         </label>
                     </div>
                     <div className="input">
                         <label>
-                            <input ref={usernameRef} onFocus={handleInputFocus} onBlur={handleInputBlur} onChange={handleInputChanged} required autoCapitalize="off" autoCorrect="off" maxLength="30" type="text" name="username"></input>
+                            <input ref={usernameRef} onFocus={handleInputFocus} onBlur={handleInputBlur} onChange={handleInputChanged} onKeyDown={handleKeyDown} required autoCapitalize="off" autoCorrect="off" maxLength="30" type="text" name="username"></input>
                             <span>Username</span>
                             {fieldValidation.username.display && <span className={`icon ${fieldValidation.username.type}`} />}
                         </label>
@@ -225,7 +253,7 @@ export function Signup() {
                     
                     <div className="input">
                         <label>
-                            <input ref={passwordRef} onFocus={handleInputFocus} onBlur={handleInputBlur} onChange={handleInputChanged} aria-label="Password" required autoCapitalize="off" autoCorrect="off" autoComplete="off" type={passwordButton.inputType} name="password"></input>
+                            <input ref={passwordRef} onFocus={handleInputFocus} onBlur={handleInputBlur} onChange={handleInputChanged} onKeyDown={handleKeyDown} aria-label="Password" required autoCapitalize="off" autoCorrect="off" autoComplete="off" type={passwordButton.inputType} name="password"></input>
                             <span>Password</span>
                             <button type="button" onClick={handleDisplayPasswordChanged} style={{display:passwordButtonStyle}}>{passwordButton.text}</button>
                             {fieldValidation.password.display && <span className={`icon ${fieldValidation.password.type}`} />}
