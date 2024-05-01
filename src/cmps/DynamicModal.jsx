@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { GET_DYNAMIC_MODAL_DATA } from "../store/reducers/app.reducer"
 import { useEffect, useRef } from "react"
 import { utilService } from "../services/util.service"
+import { onLoadingDone } from "../store/actions/app.actions"
 
 export function DynamicModal() {
     const modalData = useSelector((storeState) => storeState.appModule.modalData)
@@ -27,6 +28,7 @@ export function DynamicModal() {
     const Cmp = modalData?.cmp
 
     function onCloseModal() {
+        onLoadingDone()
         modalData.props.onCloseModal()
         dispatch({ type: GET_DYNAMIC_MODAL_DATA, modalData: null })
     }
