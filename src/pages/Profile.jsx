@@ -217,10 +217,10 @@ export function Profile() {
             <section className='main'>
                 <article className='tabs'>
                     <div>
-                        {profileInfo.posts.length > 0 && <NavLink to={`/${loggedinUser.username}/posts`}><DynamicPostsIcon /></NavLink>}
-                        {profileInfo.reels.length > 0 && <NavLink to={`/${loggedinUser.username}/reels/`}><DynamicRealsIcon /></NavLink>}
-                        {profileInfo.saved.length > 0 && <NavLink to={`/${loggedinUser.username}/saved/`}><DynamicSavedIcon /></NavLink>}
-                        {profileInfo.tagged.length > 0 && <NavLink to={`/${loggedinUser.username}/tagged/`}><DynamicTagIcon /></NavLink>}
+                        {profileInfo.posts.length > 0 && <NavLink to={`/${profileInfo.user.username}/posts`}><DynamicPostsIcon /></NavLink>}
+                        {profileInfo.reels.length > 0 && <NavLink to={`/${profileInfo.user.username}/reels/`}><DynamicRealsIcon /></NavLink>}
+                        {profileInfo.saved.length > 0 && <NavLink to={`/${profileInfo.user.username}/saved/`}><DynamicSavedIcon /></NavLink>}
+                        {profileInfo.tagged.length > 0 && <NavLink to={`/${profileInfo.user.username}/tagged/`}><DynamicTagIcon /></NavLink>}
                     </div>
                 </article>
                 <article className='posts'>
